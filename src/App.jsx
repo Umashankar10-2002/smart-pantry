@@ -455,21 +455,36 @@ function InventoryPage({filtered,search,setSearch,filterCat,setFilterCat,statFil
 function ScanPage({settings,onSaved}) {
   const [file,setFile]=useState(null);
   const [preview,setPreview]=useState(null);
+  const [fileData,setFileData]=useState(null); // {base64, mediaType} read eagerly at pick time
   const [scanning,setScanning]=useState(false);
   const [error,setError]=useState("");
   const [extracted,setExtracted]=useState([]);
   const fileRef=useRef(); const camRef=useRef();
 
-  function pick(f){if(!f)return;setFile(f);setPreview(URL.createObjectURL(f));setError("");setExtracted([]);}
+  function pick(f){
+    if(!f)return;
+    setError("");setExtracted([]);
+    setPreview(URL.createObjectURL(f));
+    // Read immediately on iOS before the file reference can be lost
+    const r=new FileReader();
+    r.onload=()=>{
+      const dataUrl=r.result;
+      const base64=dataUrl.split(",")[1];
+      const rawType=f.type||"";
+      const mediaType=["image/jpeg","image/png","image/gif","image/webp"].includes(rawType)
+        ?rawType:(dataUrl.split(";")[0].replace("data:","")||"image/jpeg");
+      setFile(f);
+      setFileData({base64,mediaType,name:f.name,size:f.size});
+    };
+    r.onerror=()=>setError("Could not read file. Please try another image.");
+    r.readAsDataURL(f);
+  }
 
   async function scan(){
-    if(!file)return;
+    if(!fileData)return;
     setScanning(true);setError("");setExtracted([]);
     try{
-      const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error("Read failed"));r.readAsDataURL(file);});
-      const base64=dataUrl.split(",")[1];
-      const rawType=file.type||"";
-      const mediaType=["image/jpeg","image/png","image/gif","image/webp"].includes(rawType)?rawType:(dataUrl.split(";")[0].replace("data:","")||"image/jpeg");
+      const {base64,mediaType}=fileData;
       const today=new Date().toISOString().split("T")[0];
       const res=await fetch("https://api.anthropic.com/v1/messages",{
         method:"POST",headers:{"Content-Type":"application/json"},
@@ -516,7 +531,7 @@ function ScanPage({settings,onSaved}) {
       <button className="btn-p" style={{marginBottom:12}} onClick={()=>onSaved(extracted.filter(i=>i.selected).map(({selected,...i})=>i))}>
         ✓ Add {extracted.filter(i=>i.selected).length} Items to Pantry
       </button>
-      <button className="btn-s" onClick={()=>{setExtracted([]);setFile(null);setPreview(null);}}>↩ Scan Another</button>
+      <button className="btn-s" onClick={()=>{setExtracted([]);setFile(null);setFileData(null);setPreview(null);}}>↩ Scan Another</button>
     </div>
   );
 
@@ -525,7 +540,11 @@ function ScanPage({settings,onSaved}) {
       <div style={{fontSize:22,fontWeight:900,color:"#1E293B",marginBottom:4,letterSpacing:"-0.01em"}}>Scan Receipt 📷</div>
       <div style={{color:"#94A3B8",fontSize:14,fontWeight:600,marginBottom:22}}>Take a photo or pick from gallery.</div>
 
-      {!file ? <>
+      {!fileData ? <>
+        {/* Show a loading state briefly while FileReader runs */}
+        {file && !fileData && (
+          <div style={{textAlign:"center",padding:"20px 0",color:"#94A3B8",fontWeight:700}}>Loading…</div>
+        )}
         <button onClick={()=>camRef.current?.click()} style={{
           background:"#1E293B",
           color:"#F8FAFC",border:"none",borderRadius:28,padding:"36px 20px",
@@ -557,8 +576,8 @@ function ScanPage({settings,onSaved}) {
       </> : <>
         <div className="glass-light" style={{padding:20,marginBottom:16}}>
           {preview&&<img src={preview} alt="Receipt" style={{width:"100%",maxHeight:260,objectFit:"contain",borderRadius:18,marginBottom:14}}/>}
-          <div style={{fontWeight:800,fontSize:15,color:"#1E293B",marginBottom:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{file.name}</div>
-          <div style={{color:"#94A3B8",fontSize:13,fontWeight:600,marginBottom:16}}>{(file.size/1024).toFixed(0)} KB</div>
+          <div style={{fontWeight:800,fontSize:15,color:"#1E293B",marginBottom:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{fileData?.name||file?.name||"Receipt"}</div>
+          <div style={{color:"#94A3B8",fontSize:13,fontWeight:600,marginBottom:16}}>{fileData?((fileData.size||0)/1024).toFixed(0):""} KB</div>
           {error&&(
             <div style={{background:"#FEF2F2",border:"1px solid #FECACA",borderRadius:16,padding:"14px 16px",marginBottom:14}}>
               <div style={{fontWeight:800,fontSize:14,color:"#DC2626",marginBottom:3}}>⚠️ Scan failed</div>
@@ -573,7 +592,7 @@ function ScanPage({settings,onSaved}) {
               </div>
             : <>
                 <button className="btn-p" onClick={scan} style={{marginBottom:10}}>🔍 Extract Items</button>
-                <button className="btn-s" onClick={()=>{setFile(null);setPreview(null);setError("");}}>↩ Change Photo</button>
+                <button className="btn-s" onClick={()=>{setFile(null);setFileData(null);setPreview(null);setError("");}}>↩ Change Photo</button>
               </>
           }
         </div>
