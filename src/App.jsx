@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const CLAUDE_MODEL = "claude-sonnet-4-20250514";
+const CLAUDE_MODEL = "claude-sonnet-4-5";
 const STORAGE_KEY = "smart_pantry_v2";
 const SETTINGS_KEY = "smart_pantry_settings_v2";
 
