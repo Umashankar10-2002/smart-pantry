@@ -486,7 +486,7 @@ function ScanPage({settings,onSaved}) {
     try{
       const {base64,mediaType}=fileData;
       const today=new Date().toISOString().split("T")[0];
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
+      const res=await fetch("/api/claude",{
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
           model:CLAUDE_MODEL,max_tokens:2048,
@@ -792,7 +792,7 @@ function ItemForm({item,settings,onSave,onCancel}) {
     if(local!=="📦"){f("emoji",local);return;}
     setGenning(true);
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({model:CLAUDE_MODEL,max_tokens:20,messages:[{role:"user",content:`One emoji for "${form.name}" (${form.category}). Reply ONLY one emoji.`}]})});
       const data=await res.json();
       const t=data.content?.[0]?.text?.trim();
