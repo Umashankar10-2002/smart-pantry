@@ -63,10 +63,9 @@ const S = {
 };
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{overscroll-behavior:none;background:#F4F6F9;}
-input,select,textarea,button{font-family:inherit;}
+input,select,textarea,button{font-family:-apple-system,'SF Pro Display','SF Pro Text',BlinkMacSystemFont,sans-serif;}
 button{cursor:pointer;border:none;}
 ::-webkit-scrollbar{display:none;}
 
@@ -182,7 +181,7 @@ const BG = {
   margin: "0 auto",
   paddingBottom: 90,
   position: "relative",
-  fontFamily: "'Nunito', system-ui, sans-serif",
+  fontFamily: "-apple-system, 'SF Pro Display', 'SF Pro Text', BlinkMacSystemFont, sans-serif",
 };
 
 export default function App() {
@@ -380,11 +379,11 @@ function HomePage({enriched,sum,urgent,frozen,good,onItem,onAdd,onStatClick}) {
       </>}
 
       {enriched.length === 0 && (
-        <div style={{textAlign:"center",padding:"50px 20px"}}>
-          <div style={{fontSize:80,marginBottom:16}}>🛒</div>
-          <div style={{fontSize:22,fontWeight:900,color:"#1E293B",marginBottom:8,letterSpacing:"-0.01em"}}>Pantry is empty</div>
-          <div style={{color:"#94A3B8",marginBottom:28,fontSize:15,fontWeight:600}}>Scan a receipt or add your first item.</div>
-          <button className="btn-p" onClick={onAdd} style={{maxWidth:220,margin:"0 auto",display:"block"}}>＋ Add First Item</button>
+        <div style={{textAlign:"center",padding:"40px 20px"}}>
+          <div style={{fontSize:48,marginBottom:12}}>🛒</div>
+          <div style={{fontSize:20,fontWeight:900,color:"#1E293B",marginBottom:6,letterSpacing:"-0.01em"}}>Pantry is empty</div>
+          <div style={{color:"#94A3B8",marginBottom:24,fontSize:14,fontWeight:600}}>Scan a receipt or add your first item.</div>
+          <button className="btn-p" onClick={onAdd} style={{maxWidth:200,margin:"0 auto",display:"block"}}>＋ Add First Item</button>
         </div>
       )}
     </div>
