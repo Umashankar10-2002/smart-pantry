@@ -409,7 +409,7 @@ function InventoryPage({filtered,search,setSearch,filterCat,setFilterCat,statFil
         <input className="inp" placeholder="Search items…" value={search} onChange={e=>setSearch(e.target.value)} style={{paddingLeft:44}}/>
       </div>
 
-      <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:12,marginBottom:4}}>
+      <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:12,marginBottom:4,marginLeft:-20,marginRight:-20,paddingLeft:20,paddingRight:20}}>
         {["All",...CATEGORIES].map(c=>(
           <button key={c} className="chip" onClick={()=>setFilterCat(c)} style={{
             background:filterCat===c?"#1E293B":"#E2E8F0",
