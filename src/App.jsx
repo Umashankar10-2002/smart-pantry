@@ -643,16 +643,15 @@ function ItemRow({item,onClick}) {
 
   return (
     <div onClick={onClick} style={{
-      padding:"16px 16px",
+      padding:"16px 20px",
       borderBottom:"1px solid #F0F3F8",
       cursor:"pointer",
-      transition:"background .1s",
     }}
       onTouchStart={e=>e.currentTarget.style.background="#F8FAFC"}
       onTouchEnd={e=>e.currentTarget.style.background="transparent"}>
 
-      {/* Top row: name left, badge right */}
-      <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8,marginBottom:10}}>
+      {/* Name top-left, badge top-right */}
+      <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8,marginBottom:12}}>
         <div style={{fontWeight:700,fontSize:16,color:"#1E293B",lineHeight:1.3,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{item.name}</div>
         <span className="badge" style={{background:s.bg,color:s.text,border:`1px solid ${s.border}`,fontSize:11,flexShrink:0}}>
           <span className="dot" style={{background:s.dot}}/>
@@ -660,16 +659,16 @@ function ItemRow({item,onClick}) {
         </span>
       </div>
 
-      {/* Bottom row: emoji + meta left */}
-      <div style={{display:"flex",alignItems:"center",gap:10}}>
+      {/* Emoji centered, with meta and bar below */}
+      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
         <div style={{
-          width:40,height:40,borderRadius:14,flexShrink:0,
+          width:52,height:52,borderRadius:16,
           background:s.bg,border:`1px solid ${s.border}`,
-          display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,
+          display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,
         }}>{item.emoji||"📦"}</div>
 
-        <div style={{flex:1,minWidth:0}}>
-          <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:6}}>
+        <div style={{width:"100%"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:5,marginBottom:8}}>
             <span style={{fontSize:13,color:"#64748B",fontWeight:500}}>{item.quantity} {item.unit}</span>
             <span style={{color:"#E2E8F0"}}>·</span>
             <span style={{fontSize:12,color:"#94A3B8",fontWeight:500}}>{item.category}</span>
