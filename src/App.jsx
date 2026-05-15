@@ -136,8 +136,8 @@ button{cursor:pointer;border:none;}
 .btn-danger:active{transform:scale(0.97);}
 
 .nav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:430px;
+  position:fixed;bottom:0;left:0;right:0;
+  width:100%;
   background:rgba(244,246,249,0.95);
   border-top:1px solid #E2E8F0;
   display:flex;z-index:100;
@@ -179,8 +179,7 @@ button{cursor:pointer;border:none;}
 const BG = {
   background: "#F4F6F9",
   minHeight: "100dvh",
-  maxWidth: 430,
-  margin: "0 auto",
+  width: "100%",
   paddingBottom: 90,
   position: "relative",
   fontFamily: "-apple-system, 'SF Pro Display', 'SF Pro Text', BlinkMacSystemFont, sans-serif",
@@ -620,51 +619,70 @@ function SettingsPage({settings,setSettings,items,setItems}) {
 // ─── Item Row ────────────────────────────────────────────────────────────────
 function ItemRow({item,onClick}) {
   const s = S[item.status] || S.good;
-  const isLow = item.quantity <= 1;
 
-  // Freshness bar: 0–100%
   let barPct = 100;
   if (item.days !== null && item.storageType !== "Frozen") {
     if (item.days < 0) barPct = 0;
     else {
-      const total = item.category ? (DEFAULT_SETTINGS.defaultExpiryByCategory[item.category] || 30) : 30;
+      const total = DEFAULT_SETTINGS.defaultExpiryByCategory[item.category] || 30;
       barPct = Math.min(100, Math.max(0, Math.round((item.days / total) * 100)));
     }
   }
 
+  const dayLabel = item.days === null ? null
+    : item.days < 0 ? `${Math.abs(item.days)}d ago`
+    : item.days === 0 ? "Today"
+    : item.days === 1 ? "Tomorrow"
+    : `${item.days}d`;
+
+  const dayColor = item.days === null ? "#94A3B8"
+    : item.days < 0 ? "#EF4444"
+    : item.days <= 3 ? "#F97316"
+    : item.days <= 7 ? "#F59E0B"
+    : "#94A3B8";
+
   return (
-    <div className="row" onClick={onClick}>
-      <div style={{
-        width:46,height:46,borderRadius:16,
-        background:s.bg,border:`1px solid ${s.border}`,
-        display:"flex",alignItems:"center",justifyContent:"center",
-        fontSize:24,flexShrink:0,
-      }}>{item.emoji||"📦"}</div>
+    <div onClick={onClick} style={{
+      padding:"16px 16px",
+      borderBottom:"1px solid #F0F3F8",
+      cursor:"pointer",
+      transition:"background .1s",
+    }}
+      onTouchStart={e=>e.currentTarget.style.background="#F8FAFC"}
+      onTouchEnd={e=>e.currentTarget.style.background="transparent"}>
 
-      <div style={{flex:1,minWidth:0}}>
-        <div style={{fontWeight:700,fontSize:15,color:"#1E293B",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{item.name}</div>
-        <div style={{display:"flex",alignItems:"center",gap:6,marginTop:3}}>
-          <span style={{fontSize:13,color:"#64748B",fontWeight:500}}>{item.quantity} {item.unit}</span>
-          <span style={{color:"#E2E8F0",fontSize:12}}>·</span>
-          <span style={{fontSize:12,color:"#94A3B8",fontWeight:500}}>{item.category}</span>
-        </div>
-        {item.storageType !== "Frozen" && item.days !== null && (
-          <div style={{display:"flex",alignItems:"center",gap:6,marginTop:4}}>
-            <div className="bar-track" style={{flex:1,margin:0}}>
-              <div className="bar-fill" style={{width:`${barPct}%`,background:s.bar}}/>
-            </div>
-            <div style={{fontSize:11,color:item.days<0?"#EF4444":item.days<=3?"#F97316":item.days<=7?"#FBBF24":"#94A3B8",fontWeight:600,flexShrink:0}}>
-              {item.days<0?`${Math.abs(item.days)}d ago`:item.days===0?"Today":item.days===1?"Tomorrow":`${item.days}d`}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div style={{flexShrink:0,textAlign:"right",minWidth:56}}>
-        <span className="badge" style={{background:s.bg,color:s.text,border:`1px solid ${s.border}`,fontSize:10,display:"block"}}>
+      {/* Top row: name left, badge right */}
+      <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8,marginBottom:10}}>
+        <div style={{fontWeight:700,fontSize:16,color:"#1E293B",lineHeight:1.3,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{item.name}</div>
+        <span className="badge" style={{background:s.bg,color:s.text,border:`1px solid ${s.border}`,fontSize:11,flexShrink:0}}>
           <span className="dot" style={{background:s.dot}}/>
           {s.label}
         </span>
+      </div>
+
+      {/* Bottom row: emoji + meta left */}
+      <div style={{display:"flex",alignItems:"center",gap:10}}>
+        <div style={{
+          width:40,height:40,borderRadius:14,flexShrink:0,
+          background:s.bg,border:`1px solid ${s.border}`,
+          display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,
+        }}>{item.emoji||"📦"}</div>
+
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:6}}>
+            <span style={{fontSize:13,color:"#64748B",fontWeight:500}}>{item.quantity} {item.unit}</span>
+            <span style={{color:"#E2E8F0"}}>·</span>
+            <span style={{fontSize:12,color:"#94A3B8",fontWeight:500}}>{item.category}</span>
+          </div>
+          {item.storageType !== "Frozen" && item.days !== null && (
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              <div style={{flex:1,height:4,background:"#F1F5F9",borderRadius:99,overflow:"hidden"}}>
+                <div style={{height:"100%",width:`${barPct}%`,background:s.bar,borderRadius:99}}/>
+              </div>
+              <span style={{fontSize:11,fontWeight:700,color:dayColor,flexShrink:0,minWidth:40,textAlign:"right"}}>{dayLabel}</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
