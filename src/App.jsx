@@ -643,32 +643,32 @@ function ItemRow({item,onClick}) {
 
   return (
     <div onClick={onClick} style={{
-      padding:"16px 20px",
+      padding:"16px 24px",
       borderBottom:"1px solid #F0F3F8",
       cursor:"pointer",
     }}
       onTouchStart={e=>e.currentTarget.style.background="#F8FAFC"}
       onTouchEnd={e=>e.currentTarget.style.background="transparent"}>
 
-      {/* Name top-left, badge top-right */}
-      <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8,marginBottom:12}}>
-        <div style={{fontWeight:700,fontSize:16,color:"#1E293B",lineHeight:1.3,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{item.name}</div>
+      {/* Row 1: name top-left, badge top-right */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,marginBottom:12}}>
+        <div style={{fontWeight:700,fontSize:16,color:"#1E293B",flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",textAlign:"left"}}>{item.name}</div>
         <span className="badge" style={{background:s.bg,color:s.text,border:`1px solid ${s.border}`,fontSize:11,flexShrink:0}}>
           <span className="dot" style={{background:s.dot}}/>
           {s.label}
         </span>
       </div>
 
-      {/* Emoji centered, with meta and bar below */}
-      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
+      {/* Row 2: emoji left, meta + bar right */}
+      <div style={{display:"flex",alignItems:"center",gap:14}}>
         <div style={{
-          width:52,height:52,borderRadius:16,
+          width:50,height:50,borderRadius:16,flexShrink:0,
           background:s.bg,border:`1px solid ${s.border}`,
           display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,
         }}>{item.emoji||"📦"}</div>
 
-        <div style={{width:"100%"}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:5,marginBottom:8}}>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:8}}>
             <span style={{fontSize:13,color:"#64748B",fontWeight:500}}>{item.quantity} {item.unit}</span>
             <span style={{color:"#E2E8F0"}}>·</span>
             <span style={{fontSize:12,color:"#94A3B8",fontWeight:500}}>{item.category}</span>
@@ -678,7 +678,7 @@ function ItemRow({item,onClick}) {
               <div style={{flex:1,height:4,background:"#F1F5F9",borderRadius:99,overflow:"hidden"}}>
                 <div style={{height:"100%",width:`${barPct}%`,background:s.bar,borderRadius:99}}/>
               </div>
-              <span style={{fontSize:11,fontWeight:700,color:dayColor,flexShrink:0,minWidth:40,textAlign:"right"}}>{dayLabel}</span>
+              <span style={{fontSize:11,fontWeight:700,color:dayColor,flexShrink:0,minWidth:44,textAlign:"right"}}>{dayLabel}</span>
             </div>
           )}
         </div>
