@@ -289,20 +289,20 @@ export default function App() {
 // ─── Home Page ───────────────────────────────────────────────────────────────
 function HomePage({enriched,sum,urgent,frozen,good,onItem,onAdd,onStatClick}) {
   return (
-    <div className="page" style={{paddingTop:20}}>
+    <div className="page" style={{paddingTop:28}}>
 
       {/* Title row */}
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
-        <div style={{fontSize:28,fontWeight:700,color:"#1E293B",letterSpacing:"-0.02em"}}>My Pantry</div>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:24}}>
+        <div style={{fontSize:32,fontWeight:700,color:"#1E293B",letterSpacing:"-0.02em"}}>My Pantry</div>
         <button onClick={onAdd} style={{
           background:"#1E293B",color:"white",border:"none",
-          borderRadius:14,padding:"10px 18px",fontSize:15,fontWeight:600,
+          borderRadius:16,padding:"12px 22px",fontSize:16,fontWeight:600,
           display:"flex",alignItems:"center",gap:6,
         }}>＋ Add</button>
       </div>
 
       {/* Stat cards — tappable */}
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:4}}>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
         {[
           {label:"Total Items",  val:sum.total,  icon:"📦", bg:"#1E293B", fg:"#F8FAFC", filter:"all"},
           {label:"Expiring Soon",val:sum.soon,   icon:"⏰", bg:"#9F1239", fg:"#FFF1F2", filter:"soon"},
@@ -310,14 +310,14 @@ function HomePage({enriched,sum,urgent,frozen,good,onItem,onAdd,onStatClick}) {
           {label:"Pantry",       val:sum.pantry, icon:"🥫", bg:"#166534", fg:"#F0FDF4", filter:"pantry"},
         ].map(({label,val,icon,bg,fg,filter})=>(
           <div key={label} onClick={()=>onStatClick(filter)}
-            style={{background:bg,borderRadius:22,padding:"18px 16px",cursor:"pointer",
+            style={{background:bg,borderRadius:24,padding:"22px 20px",cursor:"pointer",
               transition:"transform .15s",userSelect:"none",
-              display:"flex",flexDirection:"column",gap:8,minHeight:110}}
+              display:"flex",flexDirection:"column",gap:10,minHeight:130}}
             onTouchStart={e=>e.currentTarget.style.transform="scale(0.96)"}
             onTouchEnd={e=>e.currentTarget.style.transform="scale(1)"}>
-            <div style={{fontSize:26}}>{icon}</div>
-            <div style={{fontSize:32,fontWeight:900,color:fg,lineHeight:1,letterSpacing:"-0.02em"}}>{val}</div>
-            <div style={{fontSize:12,color:`${fg}90`,fontWeight:700}}>{label}</div>
+            <div style={{fontSize:28}}>{icon}</div>
+            <div style={{fontSize:36,fontWeight:700,color:fg,lineHeight:1,letterSpacing:"-0.02em"}}>{val}</div>
+            <div style={{fontSize:13,color:`${fg}90`,fontWeight:500}}>{label}</div>
           </div>
         ))}
       </div>
