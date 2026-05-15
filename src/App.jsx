@@ -71,7 +71,7 @@ input,select,textarea,button{font-family:-apple-system,'SF Pro Display','SF Pro 
 button{cursor:pointer;border:none;}
 ::-webkit-scrollbar{display:none;}
 
-.page{padding:0 20px 16px;}
+.page{padding:0 16px 16px;}
 
 .glass{
   background:#FFFFFF;
@@ -326,40 +326,25 @@ function HomePage({enriched,sum,urgent,frozen,good,onItem,onAdd,onStatClick}) {
         ))}
       </div>
 
-      {/* Urgent */}
-      {urgent.length > 0 && <>
-        <div style={{marginTop:20}}/>
+      {/* All items in one card like items page */}
+      {enriched.length > 0 && (
         <div className="glass-light">
-          {urgent.map(i=><ItemRow key={i.id} item={i} onClick={()=>onItem(i)}/>)}
-        </div>
-      </>}
-
-      {/* Good */}
-      {good.length > 0 && <>
-        <div style={{marginTop:16}}/>
-        <div className="glass-light">
-          {good.slice(0,10).map(i=><ItemRow key={i.id} item={i} onClick={()=>onItem(i)}/>)}
+          {[...urgent, ...good.slice(0,10), ...frozen].map(i=>
+            <ItemRow key={i.id} item={i} onClick={()=>onItem(i)}/>
+          )}
           {good.length>10 && (
-            <div style={{padding:"13px 18px",textAlign:"center",color:"#94A3B8",fontSize:13,fontWeight:700,borderTop:"1px solid #F0F3F8"}}>
+            <div style={{padding:"13px 18px",textAlign:"center",color:"#94A3B8",fontSize:13,fontWeight:600,borderTop:"1px solid #F0F3F8"}}>
               +{good.length-10} more items
             </div>
           )}
         </div>
-      </>}
-
-      {/* Frozen */}
-      {frozen.length > 0 && <>
-        <div style={{marginTop:16}}/>
-        <div className="glass-light">
-          {frozen.map(i=><ItemRow key={i.id} item={i} onClick={()=>onItem(i)}/>)}
-        </div>
-      </>}
+      )}
 
       {enriched.length === 0 && (
         <div style={{textAlign:"center",padding:"40px 20px"}}>
           <div style={{fontSize:48,marginBottom:12}}>🛒</div>
-          <div style={{fontSize:20,fontWeight:900,color:"#1E293B",marginBottom:6,letterSpacing:"-0.01em"}}>Pantry is empty</div>
-          <div style={{color:"#94A3B8",marginBottom:24,fontSize:14,fontWeight:600}}>Scan a receipt or add your first item.</div>
+          <div style={{fontSize:20,fontWeight:700,color:"#1E293B",marginBottom:6}}>Pantry is empty</div>
+          <div style={{color:"#94A3B8",marginBottom:24,fontSize:14}}>Scan a receipt or add your first item.</div>
           <button className="btn-p" onClick={onAdd} style={{maxWidth:200,margin:"0 auto",display:"block"}}>＋ Add First Item</button>
         </div>
       )}
@@ -409,7 +394,7 @@ function InventoryPage({filtered,search,setSearch,filterCat,setFilterCat,statFil
         <input className="inp" placeholder="Search items…" value={search} onChange={e=>setSearch(e.target.value)} style={{paddingLeft:44}}/>
       </div>
 
-      <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:12,marginBottom:4,marginLeft:-20,marginRight:-20,paddingLeft:20,paddingRight:20}}>
+      <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:12,marginBottom:4,marginLeft:-16,marginRight:-16,paddingLeft:16,paddingRight:16}}>
         {["All",...CATEGORIES].map(c=>(
           <button key={c} className="chip" onClick={()=>setFilterCat(c)} style={{
             background:filterCat===c?"#1E293B":"#E2E8F0",
