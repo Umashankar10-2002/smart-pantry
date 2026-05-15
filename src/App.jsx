@@ -653,30 +653,29 @@ function ItemRow({item,onClick}) {
       }}>{item.emoji||"📦"}</div>
 
       <div style={{flex:1,minWidth:0}}>
-        <div style={{fontWeight:800,fontSize:15,color:"#1E293B",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",letterSpacing:"-0.01em"}}>{item.name}</div>
+        <div style={{fontWeight:700,fontSize:15,color:"#1E293B",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{item.name}</div>
         <div style={{display:"flex",alignItems:"center",gap:6,marginTop:3}}>
-          <span style={{fontSize:13,color:"#64748B",fontWeight:600}}>{item.quantity} {item.unit}</span>
+          <span style={{fontSize:13,color:"#64748B",fontWeight:500}}>{item.quantity} {item.unit}</span>
           <span style={{color:"#E2E8F0",fontSize:12}}>·</span>
-          <span style={{fontSize:12,color:"#94A3B8",fontWeight:600}}>{item.category}</span>
-          {isLow && <span className="pill" style={{background:"#FFFBEB",color:"#92400E",border:"1px solid #FDE68A"}}>⚠ Low</span>}
+          <span style={{fontSize:12,color:"#94A3B8",fontWeight:500}}>{item.category}</span>
         </div>
         {item.storageType !== "Frozen" && item.days !== null && (
-          <div className="bar-track">
-            <div className="bar-fill" style={{width:`${barPct}%`,background:s.bar}}/>
-          </div>
+          <>
+            <div className="bar-track">
+              <div className="bar-fill" style={{width:`${barPct}%`,background:s.bar}}/>
+            </div>
+            <div style={{fontSize:11,color:item.days<0?"#EF4444":item.days<=3?"#F97316":item.days<=7?"#FBBF24":"#94A3B8",fontWeight:600,marginTop:3}}>
+              {item.days<0?`Expired ${Math.abs(item.days)}d ago`:item.days===0?"Today":item.days===1?"Tomorrow":`${item.days}d left`}
+            </div>
+          </>
         )}
       </div>
 
-      <div style={{flexShrink:0,textAlign:"right",minWidth:64}}>
-        <span className="badge" style={{background:s.bg,color:s.text,border:`1px solid ${s.border}`,fontSize:10,marginBottom:3,display:"block"}}>
+      <div style={{flexShrink:0,textAlign:"right",minWidth:56}}>
+        <span className="badge" style={{background:s.bg,color:s.text,border:`1px solid ${s.border}`,fontSize:10,display:"block"}}>
           <span className="dot" style={{background:s.dot}}/>
           {s.label}
         </span>
-        {item.days!==null&&item.storageType!=="Frozen"&&(
-          <div style={{fontSize:11,color:item.days<0?"#EF4444":item.days<=3?"#F97316":item.days<=7?"#FBBF24":"#94A3B8",fontWeight:800}}>
-            {item.days<0?`${Math.abs(item.days)}d ago`:item.days===0?"Today!":item.days<=7?`${item.days}d left`:`${item.days}d`}
-          </div>
-        )}
       </div>
     </div>
   );
