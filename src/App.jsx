@@ -243,27 +243,7 @@ export default function App() {
       <style>{CSS}</style>
       <div style={{height:"env(safe-area-inset-top,0)"}}/>
 
-      {/* ── HEADER ── */}
-      <header style={{padding:"16px 20px 14px",position:"sticky",top:0,zIndex:50,background:"rgba(244,246,249,0.95)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",borderBottom:"1px solid #E2E8F0"}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:40,height:40,borderRadius:14,background:"#1E293B",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🥦</div>
-            <div>
-              <div style={{fontSize:17,fontWeight:900,color:"#1E293B",lineHeight:1.1,letterSpacing:"-0.01em"}}>Smart Pantry</div>
-              <div style={{fontSize:11,color:"#94A3B8",fontWeight:600}}>{sum.total} items tracked</div>
-            </div>
-          </div>
-          <button onClick={openAdd} style={{
-            background:"#1E293B",
-            color:"#F8FAFC",border:"none",borderRadius:14,
-            padding:"10px 18px",fontSize:14,fontWeight:800,
-            display:"flex",alignItems:"center",gap:6,
-          }}>
-            <span style={{fontSize:18,lineHeight:1}}>＋</span> Add
-          </button>
-        </div>
-      </header>
-
+      <div style={{height:"env(safe-area-inset-top,0)"}}/>
       {/* ── PAGES ── */}
       {tab==="home"      && <HomePage enriched={enriched} sum={sum} urgent={urgent} frozen={frozen} good={good} onItem={openItem} onAdd={openAdd} onStatClick={(statFilter)=>{setFilterCat("All");setSearch("");setStatFilter(statFilter);setTab("inventory");}}/>}
       {tab==="inventory" && <InventoryPage filtered={filtered} search={search} setSearch={setSearch} filterCat={filterCat} setFilterCat={setFilterCat} statFilter={statFilter} setStatFilter={setStatFilter} enriched={enriched} onItem={openItem} onBack={()=>{setStatFilter(null);setTab("home");}}/>}
@@ -308,24 +288,17 @@ export default function App() {
 
 // ─── Home Page ───────────────────────────────────────────────────────────────
 function HomePage({enriched,sum,urgent,frozen,good,onItem,onAdd,onStatClick}) {
-  const greeting = () => {
-    const h = new Date().getHours();
-    if (h < 12) return "Good morning 🌅";
-    if (h < 17) return "Good afternoon ☀️";
-    return "Good evening 🌙";
-  };
-
   return (
     <div className="page" style={{paddingTop:20}}>
-      {/* Greeting */}
-      <div style={{marginBottom:20}}>
-        <div style={{fontSize:13,color:"#94A3B8",fontWeight:700,marginBottom:2}}>{greeting()}</div>
-        <div style={{fontSize:26,fontWeight:900,color:"#1E293B",letterSpacing:"-0.02em",lineHeight:1.2}}>
-          {sum.expired > 0 ? `${sum.expired} item${sum.expired>1?"s":""} expired 😬` :
-           sum.soon > 0 ? `${sum.soon} expiring soon ⚠️` :
-           sum.total === 0 ? "Your pantry is empty" :
-           "Everything looks fresh! 🎉"}
-        </div>
+
+      {/* Title row */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
+        <div style={{fontSize:28,fontWeight:700,color:"#1E293B",letterSpacing:"-0.02em"}}>My Pantry</div>
+        <button onClick={onAdd} style={{
+          background:"#1E293B",color:"white",border:"none",
+          borderRadius:14,padding:"10px 18px",fontSize:15,fontWeight:600,
+          display:"flex",alignItems:"center",gap:6,
+        }}>＋ Add</button>
       </div>
 
       {/* Stat cards — tappable */}
