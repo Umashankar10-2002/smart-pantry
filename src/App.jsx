@@ -291,14 +291,14 @@ export default function App() {
 // ─── Home Page ───────────────────────────────────────────────────────────────
 function HomePage({enriched,sum,urgent,frozen,good,onItem,onAdd,onStatClick}) {
   return (
-    <div className="page" style={{paddingTop:24}}>
+    <div className="page" style={{paddingTop:20}}>
 
       {/* Title row */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
-        <div style={{fontSize:30,fontWeight:700,color:"#1E293B",letterSpacing:"-0.02em"}}>My Pantry</div>
+        <div style={{fontSize:28,fontWeight:700,color:"#1E293B",letterSpacing:"-0.02em"}}>My Pantry</div>
         <button onClick={onAdd} style={{
           background:"#1E293B",color:"white",border:"none",
-          borderRadius:16,padding:"11px 20px",fontSize:15,fontWeight:600,
+          borderRadius:14,padding:"10px 18px",fontSize:15,fontWeight:600,
           display:"flex",alignItems:"center",gap:6,
         }}>＋ Add</button>
       </div>
@@ -315,14 +315,13 @@ function HomePage({enriched,sum,urgent,frozen,good,onItem,onAdd,onStatClick}) {
             style={{
               background:bg, borderRadius:20, padding:"20px 18px",
               cursor:"pointer", transition:"transform .15s", userSelect:"none",
-              display:"flex", flexDirection:"column", gap:8,
-              aspectRatio:"1/0.85",
+              display:"flex", flexDirection:"column", gap:10, minHeight:140,
             }}
             onTouchStart={e=>e.currentTarget.style.transform="scale(0.96)"}
             onTouchEnd={e=>e.currentTarget.style.transform="scale(1)"}>
-            <div style={{fontSize:26}}>{icon}</div>
-            <div style={{fontSize:34,fontWeight:700,color:fg,lineHeight:1,letterSpacing:"-0.02em"}}>{val}</div>
-            <div style={{fontSize:12,color:`${fg}80`,fontWeight:500,marginTop:"auto"}}>{label}</div>
+            <div style={{fontSize:28}}>{icon}</div>
+            <div style={{fontSize:36,fontWeight:700,color:fg,lineHeight:1,letterSpacing:"-0.02em"}}>{val}</div>
+            <div style={{fontSize:13,color:`${fg}80`,fontWeight:500}}>{label}</div>
           </div>
         ))}
       </div>
