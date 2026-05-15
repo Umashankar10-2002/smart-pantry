@@ -63,8 +63,10 @@ const S = {
 };
 
 const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{overscroll-behavior:none;background:#F4F6F9;height:100%;min-height:100dvh;}
+html{height:-webkit-fill-available;}
+html,body{overscroll-behavior:none;background:#F4F6F9;min-height:100vh;min-height:-webkit-fill-available;}
 input,select,textarea,button{font-family:-apple-system,'SF Pro Display','SF Pro Text',BlinkMacSystemFont,sans-serif;}
 button{cursor:pointer;border:none;}
 ::-webkit-scrollbar{display:none;}
