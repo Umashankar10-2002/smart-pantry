@@ -64,7 +64,7 @@ const S = {
 
 const CSS = `
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{overscroll-behavior:none;background:#F4F6F9;}
+html,body{overscroll-behavior:none;background:#F4F6F9;height:100%;min-height:100dvh;}
 input,select,textarea,button{font-family:-apple-system,'SF Pro Display','SF Pro Text',BlinkMacSystemFont,sans-serif;}
 button{cursor:pointer;border:none;}
 ::-webkit-scrollbar{display:none;}
@@ -176,7 +176,7 @@ button{cursor:pointer;border:none;}
 // ─── GRADIENT BG ─────────────────────────────────────────────────────────────
 const BG = {
   background: "#F4F6F9",
-  minHeight: "100vh",
+  minHeight: "100dvh",
   maxWidth: 430,
   margin: "0 auto",
   paddingBottom: 90,
@@ -305,7 +305,7 @@ function HomePage({enriched,sum,urgent,frozen,good,onItem,onAdd,onStatClick}) {
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:4}}>
         {[
           {label:"Total Items",  val:sum.total,  icon:"📦", bg:"#1E293B", fg:"#F8FAFC", filter:"all"},
-          {label:"Expiring Soon",val:sum.soon,   icon:"⏰", bg:"#92400E", fg:"#FFFBEB", filter:"soon"},
+          {label:"Expiring Soon",val:sum.soon,   icon:"⏰", bg:"#9F1239", fg:"#FFF1F2", filter:"soon"},
           {label:"Frozen",       val:sum.frozen, icon:"❄️", bg:"#1E3A5F", fg:"#EFF6FF", filter:"frozen"},
           {label:"Pantry",       val:sum.pantry, icon:"🥫", bg:"#166534", fg:"#F0FDF4", filter:"pantry"},
         ].map(({label,val,icon,bg,fg,filter})=>(
