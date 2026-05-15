@@ -660,14 +660,14 @@ function ItemRow({item,onClick}) {
           <span style={{fontSize:12,color:"#94A3B8",fontWeight:500}}>{item.category}</span>
         </div>
         {item.storageType !== "Frozen" && item.days !== null && (
-          <>
-            <div className="bar-track">
+          <div style={{display:"flex",alignItems:"center",gap:6,marginTop:4}}>
+            <div className="bar-track" style={{flex:1,margin:0}}>
               <div className="bar-fill" style={{width:`${barPct}%`,background:s.bar}}/>
             </div>
-            <div style={{fontSize:11,color:item.days<0?"#EF4444":item.days<=3?"#F97316":item.days<=7?"#FBBF24":"#94A3B8",fontWeight:600,marginTop:3}}>
-              {item.days<0?`Expired ${Math.abs(item.days)}d ago`:item.days===0?"Today":item.days===1?"Tomorrow":`${item.days}d left`}
+            <div style={{fontSize:11,color:item.days<0?"#EF4444":item.days<=3?"#F97316":item.days<=7?"#FBBF24":"#94A3B8",fontWeight:600,flexShrink:0}}>
+              {item.days<0?`${Math.abs(item.days)}d ago`:item.days===0?"Today":item.days===1?"Tomorrow":`${item.days}d`}
             </div>
-          </>
+          </div>
         )}
       </div>
 
